@@ -8,9 +8,9 @@
     "npm": "8"
   },
   "scripts": {
-    "dev": "next dev",
+    "dev": "dotenv -e ./configs/envs/.env.mind next dev",
     "dev:preset": "./tools/scripts/dev.preset.sh",
-    "build": "next build",
+    "build": "next build ",
     "build:docker": "docker build --build-arg GIT_COMMIT_SHA=$(git rev-parse --short HEAD) --build-arg GIT_TAG=$(git describe --tags --abbrev=0) -t blockscout-frontend ./",
     "start": "next start",
     "start:docker:local": "docker run -p 3000:3000 --env-file .env.local blockscout-frontend",
