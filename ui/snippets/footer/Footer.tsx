@@ -40,37 +40,41 @@ const Footer = () => {
       icon: editIcon,
       iconSize: '16px',
       text: 'Submit an issue',
-      url: issueUrl,
+      url: "https://github.com/Mind-chain/MIndscan/issues",
     },
     {
       icon: cannyIcon,
       iconSize: '20px',
       text: 'Feature request',
-      url: 'https://blockscout.canny.io/feature-requests',
+      url: 'https://github.com/Mind-chain/MIndscan/issues',
     },
     {
       icon: gitIcon,
       iconSize: '18px',
       text: 'Contribute',
-      url: 'https://github.com/blockscout/blockscout',
+      url: 'https://github.com/Mind-chain/',
     },
     {
       icon: twitterIcon,
       iconSize: '18px',
       text: 'Twitter',
-      url: 'https://www.twitter.com/blockscoutcom',
+      url: 'https://twitter.com/MindChain1',
     },
-    {
-      icon: discordIcon,
-      iconSize: '18px',
-      text: 'Discord',
-      url: 'https://discord.gg/blockscout',
-    },
+   
     {
       icon: discussionsIcon,
       iconSize: '20px',
       text: 'Discussions',
-      url: 'https://github.com/orgs/blockscout/discussions',
+      url: 'https://t.me/mindchainMIND',
+    },
+  ];
+  const PROJECT_LINKS = [
+   
+    {
+     // icon: cannyIcon,
+      iconSize: '20px',
+      text: 'Testnet explorer',
+      url: 'https://testnet.mindscan.info',
     },
   ];
 
@@ -100,11 +104,11 @@ const Footer = () => {
           <NetworkAddToWallet/>
         </Flex>
         <Box mt={{ base: 5, lg: '44px' }}>
-          <Link fontSize="xs" href="https://www.blockscout.com">blockscout.com</Link>
+          <Link fontSize="xs" href="https://mindchain.info">mindchain.info</Link>
         </Box>
         <Text mt={ 3 } maxW={{ base: 'unset', lg: '470px' }} fontSize="xs">
-            Blockscout is a tool for inspecting and analyzing EVM based blockchains. Blockchain explorer for Ethereum Networks.
-        </Text>
+        MindScan is a tool for inspecting and analyzing the Mind Smart Chain.
+                </Text>
         <VStack spacing={ 1 } mt={ 6 } alignItems="start">
           { apiVersionUrl && (
             <Text fontSize="xs">
@@ -113,7 +117,7 @@ const Footer = () => {
           ) }
           { (config.UI.footer.frontendVersion || config.UI.footer.frontendCommit) && (
             <Text fontSize="xs">
-              Frontend: <Link href={ FRONT_VERSION_URL } target="_blank">{ config.UI.footer.frontendVersion }</Link>
+              Frontend: 0.1.0
             </Text>
           ) }
         </VStack>
@@ -126,7 +130,7 @@ const Footer = () => {
         }
       >
         <Box minW="160px" w={ config.UI.footer.links ? '160px' : '100%' }>
-          { config.UI.footer.links && <Text fontWeight={ 500 } mb={ 3 }>Blockscout</Text> }
+          { config.UI.footer.links && <Text fontWeight={ 500 } mb={ 3 }>Mind Chain</Text> }
           <Grid
             gap={ 1 }
             gridTemplateColumns={ config.UI.footer.links ? '160px' : { base: 'repeat(auto-fill, 160px)', lg: 'repeat(3, 160px)' } }
@@ -137,6 +141,20 @@ const Footer = () => {
             { BLOCKSCOUT_LINKS.map(link => <FooterLinkItem { ...link } key={ link.text }/>) }
           </Grid>
         </Box>
+
+        <Box minW="160px" w={ config.UI.footer.links ? '160px' : '100%' }>
+          { config.UI.footer.links && <Text fontWeight={ 500 } mb={ 3 }>Chains</Text> }
+          <Grid
+            gap={ 1 }
+            gridTemplateColumns={ config.UI.footer.links ? '160px' : { base: 'repeat(auto-fill, 160px)', lg: 'repeat(3, 160px)' } }
+            gridTemplateRows={{ base: 'auto', lg: config.UI.footer.links ? 'auto' : 'repeat(2, auto)' }}
+            gridAutoFlow={{ base: 'row', lg: config.UI.footer.links ? 'row' : 'column' }}
+            mt={{ base: 0, lg: config.UI.footer.links ? 0 : '100px' }}
+          >
+            { PROJECT_LINKS.map(link => <FooterLinkItem { ...link } key={ link.text }/>) }
+          </Grid>
+        </Box>
+
         { config.UI.footer.links && isLoading && (
           Array.from(Array(3)).map((i, index) => (
             <Box minW="160px" key={ index }>
