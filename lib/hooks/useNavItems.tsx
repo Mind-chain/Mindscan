@@ -27,6 +27,7 @@ import verifiedIcon from 'icons/verified.svg';
 import watchlistIcon from 'icons/watchlist.svg';
 import { rightLineArrow } from 'lib/html-entities';
 import UserAvatar from 'ui/shared/UserAvatar';
+import Valcon from 'icons/valdata/blockchain-icon.svg';
 
 interface ReturnType {
   mainNavItems: Array<NavItem | NavGroupItem>;
@@ -171,7 +172,7 @@ export default function useNavItems(): ReturnType {
       {
         text: 'Validators',
         nextRoute: { pathname: '/validators' as const },
-        icon: tokensIcon,
+        icon: Valcon,
         isActive: pathname.startsWith('/validators'),
       },
     ].filter(Boolean);
