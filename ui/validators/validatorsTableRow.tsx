@@ -4,23 +4,27 @@ import React from 'react';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import { route } from 'nextjs-routes';
 
-const ValidatorsTableRow = ({ data }: any) => {
-  console.log(data);
+const ValidatorsTableRow = ({ data, index, rankTag }: any) => {
   const dynamicHref = `/address/${data?.address}`;
+  const rank = index + 1; // Index starts from 0, so add 1 to get the rank
 
-  // const defaultHref = route({ pathname: `/address/${data.address}`, });
+  let rankEmoji = ''; // Emoji for the rank
 
+  // Define emojis for the top 3 ranks
+  if (rank === 1) {
+    rankEmoji = '🥇';
+  } else if (rank === 2) {
+    rankEmoji = '🥈';
+  } else if (rank === 3) {
+    rankEmoji = '🥉';
+  }
 
   return (
     <>
       <Tr>
-        {/* <Td style={{ color: "#63b3ed" }} overflowX={'auto'} whiteSpace={'nowrap'}>
-          {data?.address &&
-            <Link href={`${dynamicHref}`}   >
-              <Td >{data?.address}</Td>
-            </Link>
-          }
-        </Td> */}
+        <Td>
+          {rankEmoji} {rankTag}
+        </Td>
         <Td>
           <AddressEntity
             address={{ hash: data?.address }}
