@@ -21,10 +21,10 @@ const Link = chakra((props: LinkProps) => {
 
   return (
     <EntityBase.Link
-      { ...props }
-      href={ props.href ?? defaultHref }
+      {...props}
+      href={props.href ?? defaultHref}
     >
-      { props.children }
+      {props.children}
     </EntityBase.Link>
   );
 });
@@ -44,7 +44,7 @@ const Icon = (props: IconProps) => {
   };
 
   if (props.isLoading) {
-    return <Skeleton { ...styles } borderRadius="full" flexShrink={ 0 }/>;
+    return <Skeleton {...styles} borderRadius="full" flexShrink={0} />;
   }
 
   if (props.address.is_contract) {
@@ -53,10 +53,10 @@ const Icon = (props: IconProps) => {
         <Tooltip label="Verified contract">
           <span>
             <EntityBase.Icon
-              { ...props }
-              asProp={ iconContractVerified }
+              {...props}
+              asProp={iconContractVerified}
               color="green.500"
-              borderRadius={ 0 }
+              borderRadius={0}
             />
           </span>
         </Tooltip>
@@ -67,9 +67,9 @@ const Icon = (props: IconProps) => {
       <Tooltip label="Contract">
         <span>
           <EntityBase.Icon
-            { ...props }
-            asProp={ iconContract }
-            borderRadius={ 0 }
+            {...props}
+            asProp={iconContract}
+            borderRadius={0}
           />
         </span>
       </Tooltip>
@@ -77,9 +77,9 @@ const Icon = (props: IconProps) => {
   }
 
   return (
-    <Tooltip label={ props.address.implementation_name }>
-      <Flex { ...styles }>
-        <Jazzicon diameter={ props.iconSize === 'lg' ? 30 : 20 } seed={ jsNumberForAddress(props.address.hash) }/>
+    <Tooltip label={props.address.implementation_name}>
+      <Flex {...styles}>
+        <Jazzicon diameter={props.iconSize === 'lg' ? 30 : 20} seed={jsNumberForAddress(props.address.hash)} />
       </Flex>
     </Tooltip>
   );
@@ -90,9 +90,9 @@ type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps
 const Content = chakra((props: ContentProps) => {
   if (props.address.name) {
     return (
-      <Tooltip label={ props.address.hash } maxW="100vw">
-        <Skeleton isLoaded={ !props.isLoading } overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap" as="span">
-          { props.address.name }
+      <Tooltip label={props.address.hash} maxW="100vw">
+        <Skeleton isLoaded={!props.isLoading} overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap" as="span">
+          {props.address.name}
         </Skeleton>
       </Tooltip>
     );
@@ -100,8 +100,8 @@ const Content = chakra((props: ContentProps) => {
 
   return (
     <EntityBase.Content
-      { ...props }
-      text={ props.address.hash }
+      {...props}
+      text={props.address.hash}
     />
   );
 });
@@ -111,8 +111,8 @@ type CopyProps = Omit<EntityBase.CopyBaseProps, 'text'> & Pick<EntityProps, 'add
 const Copy = (props: CopyProps) => {
   return (
     <EntityBase.Copy
-      { ...props }
-      text={ props.address.hash }
+      {...props}
+      text={props.address.hash}
     />
   );
 };
@@ -124,16 +124,16 @@ export interface EntityProps extends EntityBase.EntityBaseProps {
 }
 
 const AddressEntry = (props: EntityProps) => {
-  const linkProps = _omit(props, [ 'className' ]);
-  const partsProps = _omit(props, [ 'className', 'onClick' ]);
+  const linkProps = _omit(props, ['className']);
+  const partsProps = _omit(props, ['className', 'onClick']);
 
   return (
-    <Container className={ props.className }>
-      <Icon { ...partsProps }/>
-      <Link { ...linkProps }>
-        <Content { ...partsProps }/>
+    <Container className={props.className}>
+      <Icon {...partsProps} />
+      <Link {...linkProps}>
+        <Content {...partsProps} />
       </Link>
-      <Copy { ...partsProps }/>
+      <Copy {...partsProps} />
     </Container>
   );
 };
