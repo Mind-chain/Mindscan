@@ -1,8 +1,6 @@
 import { Grid } from '@chakra-ui/react';
-import React from 'react';
-
+import React, { useEffect, useState } from 'react';
 import { route } from 'nextjs-routes';
-
 import config from 'configs/app';
 import blockIcon from 'icons/block.svg';
 import clockIcon from 'icons/clock-light.svg';
@@ -19,6 +17,66 @@ const hasGasTracker = config.UI.homepage.showGasTracker;
 const hasAvgBlockTime = config.UI.homepage.showAvgBlockTime;
 
 const Stats = () => {
+  const [latestBlock, setLatestBlock] = useState<number | null>(null);
+  const [totalLockedCoins, setTotalLockedCoins] = useState<string>("Loading..."); // State for total locked coins
+  const [currentBlockEpoch, setCurrentBlockEpoch] = useState<string>("Loading..."); // State for current block epoch
+
+  const fetchLatestBlock = async () => {
+    try {
+      const response = await fetch('https://mainnet.mindscan.info/rpc', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          jsonrpc: '2.0',
+          method: 'eth_blockNumber',
+          params: [],
+          id: 1,
+        }),
+      });
+      const data = await response.json();
+      setLatestBlock(parseInt((data as { result: string }).result, 16)); // Assert the type of data
+    } catch (error) {
+      console.error('Error fetching latest block:', error);
+    }
+  };
+
+  const fetchTotalLockedCoins = async () => {
+    try {
+      const response = await fetch('https://mainnet.mindscan.info/chaindata');
+      const data: any = await response.json(); // explicitly typed as any
+      setTotalLockedCoins(data.totalStakedAmount); // Set total locked coins
+    } catch (error) {
+      console.error('Error fetching total locked coins:', error);
+    }
+  };
+  
+
+  
+
+  const fetchCurrentBlockEpoch = async () => {
+    try {
+      const response = await fetch('https://mainnet.mindscan.info/chaindata');
+      const data: any = await response.json();
+      setCurrentBlockEpoch(data.currentBlockEpoch); // Set current block epoch
+    } catch (error) {
+      console.error('Error fetching current block epoch:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchLatestBlock(); // Fetch latest block on initial render only
+    fetchTotalLockedCoins(); // Fetch total locked coins on initial render only
+    fetchCurrentBlockEpoch(); // Fetch current block epoch on initial render only
+    const intervalId = setInterval(() => {
+      fetchLatestBlock();
+      fetchTotalLockedCoins();
+      fetchCurrentBlockEpoch();
+    }, 5000);
+    return () => clearInterval(intervalId);
+  }, []);
+
   const { data, isPlaceholderData, isError } = useApiQuery('homepage_stats', {
     queryOptions: {
       placeholderData: HOMEPAGE_STATS,
@@ -33,7 +91,7 @@ const Stats = () => {
 
   const lastItemTouchStyle = { gridColumn: { base: 'span 2', lg: 'unset' } };
 
-  let itemsCount = 5;
+  let itemsCount = 6; // Increment itemsCount for new item
   !hasGasTracker && itemsCount--;
   !hasAvgBlockTime && itemsCount--;
 
@@ -47,7 +105,7 @@ const Stats = () => {
         <StatsItem
           icon={ blockIcon }
           title="Total blocks"
-          value={ Number(data.total_blocks).toLocaleString() }
+          value={ latestBlock !== null ? latestBlock.toLocaleString() : "Loading..." }
           url={ route({ pathname: '/blocks' }) }
           isLoading={ isPlaceholderData }
         />
@@ -83,6 +141,19 @@ const Stats = () => {
             isLoading={ isPlaceholderData }
           />
         ) }
+        <StatsItem
+          icon={ blockIcon }
+          title="Total Locked Coins"
+          value={ totalLockedCoins } // Render total locked coins
+          //url={ route({ pathname: '/blocks' }) }
+          isLoading={ isPlaceholderData }
+        />
+        <StatsItem
+          icon={ blockIcon }
+          title="Current Block Epoch"
+          value={ currentBlockEpoch } // Render current block epoch
+          isLoading={ isPlaceholderData }
+        />
       </>
     );
   }
