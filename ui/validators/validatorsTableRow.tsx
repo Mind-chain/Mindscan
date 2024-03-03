@@ -1,11 +1,9 @@
-import { Td, Tr } from '@chakra-ui/react';
-import Link from 'next/link';
+import { Td, Tr, useColorMode } from '@chakra-ui/react';
 import React from 'react';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import { route } from 'nextjs-routes';
 
 const ValidatorsTableRow = ({ data, index, rankTag }: any) => {
-  const dynamicHref = `/address/${data?.address}`;
+  const { colorMode } = useColorMode(); // Get the current color mode
   const rank = index + 1; // Index starts from 0, so add 1 to get the rank
 
   let rankEmoji = ''; // Emoji for the rank
@@ -19,9 +17,12 @@ const ValidatorsTableRow = ({ data, index, rankTag }: any) => {
     rankEmoji = '🥉';
   }
 
+  const nameToShow = data.name || "Unknown"; // If name is empty, show "Unknown"
+
   return (
     <>
       <Tr>
+      <Td color={colorMode === 'dark' ? 'white' : 'black'}>{nameToShow}</Td>
         <Td>
           {rankEmoji} {rankTag}
         </Td>
@@ -38,6 +39,7 @@ const ValidatorsTableRow = ({ data, index, rankTag }: any) => {
         <Td>{data.rewards}</Td>
         <Td>{data.validatedBlocksCount}</Td>
         <Td>{data.validatedBlocksStatus}</Td>
+        {/* <Td color={colorMode === 'dark' ? 'white' : 'black'}>{nameToShow}</Td> Displaying the name with appropriate text color */}
       </Tr>
     </>
   );

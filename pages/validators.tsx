@@ -1,10 +1,11 @@
-import { Box, Table, Thead, Tbody, Tr, Th } from '@chakra-ui/react';
+import { Box, Table, Thead, Tbody, Tr, Th, useColorMode } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import ValidatorsTableRow from 'ui/validators/validatorsTableRow';
 
 interface ValidatorData {
   address: string;
+  name: string;
   stake: string;
   rewards: string;
   validatedBlocksCount: string;
@@ -12,6 +13,7 @@ interface ValidatorData {
 }
 
 const Validators = () => {
+  const { colorMode } = useColorMode(); // Get the current color mode
   const [validatorData, setValidatorData] = useState<ValidatorData[] | any>();
 
   useEffect(() => {
@@ -34,17 +36,18 @@ const Validators = () => {
       <Box>
         <div style={{ overflow: 'auto' }}>
           <Table variant="simple" minWidth="950px" size="xs">
-            <Thead style={{ background: 'rgb(35 36 37)' }}>
+            <Thead style={{ background: colorMode === 'dark' ? 'gray.800' : 'gray.100' }}>
               <Tr whiteSpace={'nowrap'}>
-              <Th>Rank</Th> 
-                <Th style={{ color: '#63b3ed' }} fontWeight={700}>
+              <Th>Node Moniker</Th>
+                <Th>Rank</Th> 
+                <Th style={{ color: colorMode === 'dark' ? 'white' : 'black' }} fontWeight={700}>
                   Address
                 </Th>
                 <Th>Stake</Th>
-                <Th>Rewards</Th>
-                <Th>Validated Blocks Count</Th>
-                <Th>Validated Blocks Status</Th>
-               {/* Added Rank column */}
+                <Th>Rewards</Th> 
+                <Th>Total porduced Blocks</Th>
+                <Th>Node Status</Th>
+                {/* <Th>Name</Th> New column for displaying name */}
               </Tr>
             </Thead>
             <Tbody overflowX="auto">
