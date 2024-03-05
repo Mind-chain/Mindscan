@@ -27,7 +27,7 @@ import verifiedIcon from 'icons/verified.svg';
 import watchlistIcon from 'icons/watchlist.svg';
 import { rightLineArrow } from 'lib/html-entities';
 import UserAvatar from 'ui/shared/UserAvatar';
-import Valcon from 'icons/valdata/blockchain-icon.svg';
+import Valcon from 'icons/RPC.svg';
 
 interface ReturnType {
   mainNavItems: Array<NavItem | NavGroupItem>;

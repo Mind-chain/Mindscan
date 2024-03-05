@@ -7,11 +7,15 @@ import clockIcon from 'icons/clock-light.svg';
 import gasIcon from 'icons/gas.svg';
 import txIcon from 'icons/transactions.svg';
 import walletIcon from 'icons/wallet.svg';
+import rocket from 'icons/rocket.svg';
+import star from 'icons/star_outline.svg';
+import coin from 'icons/token.svg';
 import useApiQuery from 'lib/api/useApiQuery';
 import { HOMEPAGE_STATS } from 'stubs/stats';
 
 import StatsGasPrices from './StatsGasPrices';
 import StatsItem from './StatsItem';
+import { token } from 'mocks/address/address';
 
 const hasGasTracker = config.UI.homepage.showGasTracker;
 const hasAvgBlockTime = config.UI.homepage.showAvgBlockTime;
@@ -20,7 +24,7 @@ const Stats = () => {
   const [latestBlock, setLatestBlock] = useState<number | null>(null);
   const [totalLockedCoins, setTotalLockedCoins] = useState<string>("Loading..."); // State for total locked coins
   const [currentBlockEpoch, setCurrentBlockEpoch] = useState<string>("Loading..."); // State for current block epoch
-
+  const [Currentactivevaliidators, setCurrentactivevaliidators] = useState<string>("Loading...");
   const fetchLatestBlock = async () => {
     try {
       const response = await fetch('https://mainnet.mindscan.info/rpc', {
@@ -55,6 +59,16 @@ const Stats = () => {
 
   
 
+  const fetchtotalactivevalidators = async () => {
+    try {
+      const response = await fetch('https://mainnet.mindscan.info/chaindata');
+      const data: any = await response.json();
+      setCurrentactivevaliidators(data.totalValidatorAddresses); // Set current block epoch
+    } catch (error) {
+      console.error('Error fetching total validators:', error);
+    }
+  };
+
   const fetchCurrentBlockEpoch = async () => {
     try {
       const response = await fetch('https://mainnet.mindscan.info/chaindata');
@@ -69,10 +83,12 @@ const Stats = () => {
     fetchLatestBlock(); // Fetch latest block on initial render only
     fetchTotalLockedCoins(); // Fetch total locked coins on initial render only
     fetchCurrentBlockEpoch(); // Fetch current block epoch on initial render only
+    fetchtotalactivevalidators();
     const intervalId = setInterval(() => {
       fetchLatestBlock();
       fetchTotalLockedCoins();
       fetchCurrentBlockEpoch();
+      fetchtotalactivevalidators();
     }, 5000);
     return () => clearInterval(intervalId);
   }, []);
@@ -142,16 +158,22 @@ const Stats = () => {
           />
         ) }
         <StatsItem
-          icon={ blockIcon }
+          icon={ coin }
           title="Total Locked Coins"
           value={ totalLockedCoins } // Render total locked coins
           //url={ route({ pathname: '/blocks' }) }
           isLoading={ isPlaceholderData }
         />
         <StatsItem
-          icon={ blockIcon }
+          icon={ star }
           title="Current Block Epoch"
           value={ currentBlockEpoch } // Render current block epoch
+          isLoading={ isPlaceholderData }
+        />
+             <StatsItem
+          icon={ rocket }
+          title="Total Active Validators"
+          value={ Currentactivevaliidators } 
           isLoading={ isPlaceholderData }
         />
       </>
